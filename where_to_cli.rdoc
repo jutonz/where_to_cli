@@ -1,0 +1,5 @@
+= where_to_cli
+
+Generate this with
+    where_to_cli rdoc
+After you have described your command line interface
