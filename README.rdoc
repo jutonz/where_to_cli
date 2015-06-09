@@ -1,6 +1,0 @@
-= where_to_cli
-
-Describe your project here
-
-:include:where_to_cli.rdoc
-
