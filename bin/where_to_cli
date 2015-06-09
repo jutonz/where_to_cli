@@ -1,30 +1,125 @@
 #!/usr/bin/env ruby
 require 'gli'
-begin # XXX: Remove this begin/rescue before distributing your app
 require 'where_to_cli'
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/where_to_cli` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/where_to_cli now"
-  exit 64
-end
 
 include GLI::App
 
-program_desc 'Describe your application here'
+program_desc 'Helps you organize your media library by enforcing a consistent directory structure.'
 
 version WhereToCli::VERSION
 
 subcommand_option_handling :normal
 arguments :strict
 
-desc 'Describe some switch here'
-switch [:s,:switch]
+desc 'Enforce a file structure on the specified file or directory'
+arg_name 'location'
+command :organize do |cmd|
 
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f,:flagname]
+  cmd.desc 'Set the name of the series (will otherwise be prompted to enter)'
+  cmd.arg_name 'series_title'
+  cmd.flag [:s, :series]
+
+  cmd.desc 'Set the season number'
+  cmd.arg_name 'season_number'
+  cmd.default_value 1
+  cmd.flag [:n, :season]
+
+  cmd.desc 'Set the series airdate'
+  cmd.arg_name 'season_airdate'
+  cmd.default_value Date.today.year
+  cmd.flag [:d, :airdate]
+
+  cmd.desc 'Only look for files with the given extension'
+  cmd.arg_name 'extname'
+  cmd.default_value '.mkv'
+  cmd.flag [:e, :ext]
+
+  cmd.action do |global_options, options, args|
+    puts ''
+    location = args[0]
+    raise "The location '#{location}' does not exist" unless File.exist? location
+
+    @options = options
+
+    Dir.chdir location
+    files = Dir.glob "*#{options[:ext]}"
+    puts "I found the following files:"
+    files.each { |file| puts file }
+    puts ''
+
+    WhereTo.configure do |config|
+      config.tvdb_api_key = ENV['TVDB_API_KEY']
+    end
+
+    process files
+
+  end
+
+end
+
+def process(files)
+  locator = WhereTo::Locator.new
+  locator.series_title = prompt_for_series_title default: locator.series_title
+
+  files.each do |file|
+    puts ''
+    puts "For file #{file}:"
+    locator.season = prompt_for_season default: locator.season
+    locator.episode_number = prompt_for_episode_number default: locator.episode_number
+    locator.group          = prompt_for_group default: locator.group
+
+    locator.lookup! 
+    locator.episode_title = prompt_for_episode_title default: locator.episode_title
+
+    puts "Updated filename: #{locator.locate.filename}"
+  end
+end
+
+def prompt_for_series_title(default: nil)
+  return @options[:series] if @options[:series]
+  prompt = "Enter a series title"
+  prompt += " (or press enter for #{default})" unless default.nil?
+  prompt += ': '
+  print prompt
+  input = STDIN.gets.chomp
+  input.empty? ? default : input
+end
+
+def prompt_for_season(default: nil)
+  prompt = "Enter a season number"
+  prompt += " (or press enter for #{default})" unless default.nil?
+  prompt += ': '
+  print prompt
+  input = STDIN.gets.chomp
+  input.empty? ? default : input
+end
+
+def prompt_for_episode_number(default: nil)
+  prompt = "Enter an episode number"
+  prompt += " (or press enter for #{default})" unless default.nil?
+  prompt += ': '
+  print prompt
+  input = STDIN.gets.chomp
+  input.empty? ? default : input
+end
+
+def prompt_for_episode_title(default: nil)
+  prompt = "Enter an episode title"
+  prompt += " (or press enter for #{default})" unless default.nil?
+  prompt += ': '
+  print prompt
+  input = STDIN.gets.chomp
+  input.empty? ? default : input
+end
+
+def prompt_for_group(default: nil)
+  prompt = "Enter a group"
+  prompt += " (or press enter for #{default})" unless default.nil?
+  prompt += ': '
+  print prompt
+  input = STDIN.gets.chomp
+  input.empty? ? default : input
+end
 
 pre do |global,command,options,args|
   # Pre logic here
