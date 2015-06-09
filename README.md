@@ -23,6 +23,9 @@ New file: great.show.E01S01.pilot.mkv
 
 ... 
 ```
+## Installation
+
+Installation is pretty easy. Just type `gem install where_to_cli`
 
 Whereto gets episode information from the tvdb database. For this functionality to work, you need to  
-`export TVDB_API_KEY='my_super_secret_api_key'`
+`export TVDB_API_KEY='my_super_secret_api_key'` susbtituting of course your [tvdb](thetvdb.com) api key. 
