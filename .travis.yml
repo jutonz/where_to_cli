@@ -1,0 +1,10 @@
+language: ruby
+rvm:
+- 2.2.1
+deploy:
+  provider: rubygems
+  api_key:
+    secure: nSPCHgnFeTmjSkKVG3XHYkwQ8WvDqjLnXoliTJM81bVRxYTnrwvkUzT08Y9MyeX7lbOsW515B+QXNzo1Sx0N7x69zFq+p+DWYD2nRSliV/ziGT7AU4eDVnhYZs7eVnv35ksKwA2F7TWbmOrPsucglCqDc/1fZjasyDnsevfI2WH2mzRdCl6bVqfEpdUsrrj26URSMcVO59ycLlUK+tElH1HsZ24jOfGNHm8z69iDSYbSJcdE/pa3A4T34YP7hw1VPLJshKQB/UrGo3PPV8S/BlgPRL9sFImGDFjr9FQqxMDw4hS5LP44AJzQXCTLrCQymFXH4zx0YcwYqgCo/n4XgPoqq3D8nhpUbMSKzCXFwvEYh4WEGQwwbaTASLSh7dLAIal+Bab9bdxvBl6EyfAD29wbq4JnBSFeZ06k/6NAjM3Xs+2mpI3gWU+X0z2aDCEjL5ibQLiGQc8nAF8BPmH4acNbUu99EtWGAVpTeErg25/0Up2UV6yJE7WYnLHhCmgRCS9piU7a03f3pWADTVW3d4UJ2pPP7KTHM3igVO/BBM2ST8ueze3SBJ6b/NnUKkeKeCBVkeqTE7bnoT/tFdtWtnl9dU/yOUt3zi866yporg7JRGH9d/hF4ErtOayoaBevKcrjSrnwQnZZBWj0IDiJ21yQo5zC3OOB/xeIDN2fM5I=
+  gem: where_to_cli
+  on:
+    repo: jutonz/where_to_cli
