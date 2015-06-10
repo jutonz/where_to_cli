@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    where_to_cli (0.1.0)
+    where_to_cli (0.1.1)
       gli (= 2.13.1)
       where_to (~> 0.9.0, >= 0.9)
 
@@ -17,7 +17,7 @@ GEM
     power_assert (0.2.3)
     rake (10.4.2)
     rdoc (4.2.0)
-    test-unit (3.1.1)
+    test-unit (3.1.2)
       power_assert
     tvdb_party (0.8.1)
       httparty (>= 0.6.1)
