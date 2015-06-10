@@ -1,4 +1,5 @@
 # whereto
+[![Build Status](https://travis-ci.org/jutonz/where_to_cli.svg?branch=master)](https://travis-ci.org/jutonz/where_to_cli)
 
 Whereto helps you take control of your media library by providing a wizard-style interface for organizing, naming, and applying metadata to your media files.  
 
