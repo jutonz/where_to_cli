@@ -73,8 +73,9 @@ def process(files)
 
     new_file = locator.locate.filename
 
+    p file
     print 'Renaming...'
-    FileUtils.mv file new_file
+    FileUtils.mv file, new_file
     puts 'success!'
     puts "New filename: #{new_file}"
   end
