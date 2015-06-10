@@ -63,13 +63,14 @@ end
 
 def process(files)
   locator = WhereTo::Locator.new
-  locator.series_title = prompt_for_series_title default: locator.series_title
+  locator.episode_number = 0
+  locator.series_title   = prompt_for_series_title default: locator.series_title
 
   files.each do |file|
     puts ''
     puts "For file #{file}:"
     locator.season = prompt_for_season default: locator.season
-    locator.episode_number = prompt_for_episode_number default: locator.episode_number
+    locator.episode_number = prompt_for_episode_number default: locator.episode_number.to_i + 1
     locator.group          = prompt_for_group default: locator.group
 
     locator.lookup! 
