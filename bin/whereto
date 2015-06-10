@@ -27,12 +27,16 @@ command :organize do |cmd|
   cmd.desc 'Set the series airdate'
   cmd.arg_name 'season_airdate'
   cmd.default_value Date.today.year
-  cmd.flag [:d, :airdate]
+  cmd.flag [:a, :airdate]
 
   cmd.desc 'Only look for files with the given extension'
   cmd.arg_name 'extname'
   cmd.default_value '.mkv'
   cmd.flag [:e, :ext]
+
+  cmd.desc "Run normally, but don't actually perform renames"
+  cmd.default_value false
+  cmd.switch :dryrun, negatable: false
 
   cmd.action do |global_options, options, args|
     puts ''
@@ -73,11 +77,16 @@ def process(files)
 
     new_file = locator.locate.filename
 
-    p file
-    print 'Renaming...'
-    FileUtils.mv file, new_file
-    puts 'success!'
     puts "New filename: #{new_file}"
+
+    if not @options[:dryrun]
+      print 'Renaming...'
+      FileUtils.mv file, new_file
+      puts 'success!'
+    else
+      puts 'Skipping rename because of dryrun flag'
+    end
+
   end
 end
 
