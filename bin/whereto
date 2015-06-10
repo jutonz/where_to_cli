@@ -69,9 +69,14 @@ def process(files)
     locator.group          = prompt_for_group default: locator.group
 
     locator.lookup! 
-    locator.episode_title = prompt_for_episode_title default: locator.episode_title
+    locator.episode_title  = prompt_for_episode_title default: locator.episode_title
 
-    puts "Updated filename: #{locator.locate.filename}"
+    new_file = locator.locate.filename
+
+    print 'Renaming...'
+    FileUtils.mv file new_file
+    puts 'success!'
+    puts "New filename: #{new_file}"
   end
 end
 
