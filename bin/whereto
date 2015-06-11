@@ -4,6 +4,15 @@ require 'where_to_cli'
 
 include GLI::App
 
+PROMPT_DESCRIPTORS = Hash.new do |hash, key|
+  hash[key] = "a #{key}"
+end
+
+PROMPT_DESCRIPTORS[:episode_number] = 'an episode number'
+PROMPT_DESCRIPTORS[:episode_title]  = 'an episode title'
+
+# PROMPT_DESCRIPTORS.freeze
+
 program_desc 'Helps you organize your media library by enforcing a consistent directory structure.'
 
 version WhereToCli::VERSION
@@ -17,17 +26,18 @@ command :organize do |cmd|
 
   cmd.desc 'Set the name of the series (will otherwise be prompted to enter)'
   cmd.arg_name 'series_title'
+  cmd.default_value nil
   cmd.flag [:s, :series]
 
   cmd.desc 'Set the season number'
   cmd.arg_name 'season_number'
-  cmd.default_value 1
+  cmd.default_value nil
   cmd.flag [:n, :season]
 
-  cmd.desc 'Set the series airdate'
-  cmd.arg_name 'season_airdate'
-  cmd.default_value Date.today.year
-  cmd.flag [:a, :airdate]
+  # cmd.desc 'Set the series airdate'
+  # cmd.arg_name 'season_airdate'
+  # cmd.default_value nil
+  # cmd.flag [:a, :airdate]
 
   cmd.desc 'Only look for files with the given extension'
   cmd.arg_name 'extname'
@@ -69,12 +79,14 @@ def process(files)
   files.each do |file|
     puts ''
     puts "For file #{file}:"
-    locator.season = prompt_for_season default: locator.season
-    locator.episode_number = prompt_for_episode_number default: locator.episode_number.to_i + 1
-    locator.group          = prompt_for_group default: locator.group
+
+    %i{season episode_number group}.each do |field|
+      puts field
+      locator.send("#{field}=", prompt_for(field, default: locator.send(field)))
+    end
 
     locator.lookup! 
-    locator.episode_title  = prompt_for_episode_title default: locator.episode_title
+    locator.episode_title  = prompt_for :episode_title, default: locator.episode_title
 
     new_file = locator.locate.filename
 
@@ -95,50 +107,13 @@ def rename(from, to:)
   puts 'success!'
 end
 
-def prompt_for_series_title(default: nil)
-  return @options[:series] if @options[:series]
-  prompt = "Enter a series title"
+def prompt_for(option, default: nil)
+  prompt = "Enter #{PROMPT_DESCRIPTORS[option]}"
   prompt += " (or press enter for #{default})" unless default.nil?
   prompt += ': '
   print prompt
   input = STDIN.gets.chomp
-  input.empty? ? default : input
-end
-
-def prompt_for_season(default: nil)
-  prompt = "Enter a season number"
-  prompt += " (or press enter for #{default})" unless default.nil?
-  prompt += ': '
-  print prompt
-  input = STDIN.gets.chomp
-  input.empty? ? default : input
-end
-
-def prompt_for_episode_number(default: nil)
-  prompt = "Enter an episode number"
-  prompt += " (or press enter for #{default})" unless default.nil?
-  prompt += ': '
-  print prompt
-  input = STDIN.gets.chomp
-  input.empty? ? default : input
-end
-
-def prompt_for_episode_title(default: nil)
-  prompt = "Enter an episode title"
-  prompt += " (or press enter for #{default})" unless default.nil?
-  prompt += ': '
-  print prompt
-  input = STDIN.gets.chomp
-  input.empty? ? default : input
-end
-
-def prompt_for_group(default: nil)
-  prompt = "Enter a group"
-  prompt += " (or press enter for #{default})" unless default.nil?
-  prompt += ': '
-  print prompt
-  input = STDIN.gets.chomp
-  input.empty? ? default : input
+  input.empty? ? default : input  
 end
 
 pre do |global,command,options,args|
