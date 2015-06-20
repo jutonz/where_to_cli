@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    where_to_cli (0.1.8)
+    where_to_cli (0.1.9)
       gli (= 2.13.1)
       where_to (~> 0.9.0, >= 0.9)
 
