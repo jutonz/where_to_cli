@@ -34,6 +34,11 @@ command :organize do |cmd|
   cmd.default_value nil
   cmd.flag [:n, :season]
 
+  cmd.desc 'Set the TVDB season id'
+  cmd.arg_name 'season_id'
+  cmd.default_value nil
+  cmd.flag [:id, :series_id]
+
   # cmd.desc 'Set the series airdate'
   # cmd.arg_name 'season_airdate'
   # cmd.default_value nil
@@ -74,6 +79,7 @@ end
 def process(files)
   locator = WhereTo::Locator.new
   locator.episode_number = 0
+  locator.season_id      = @options[:season_id]
   locator.series_title   = prompt_for :series_title, default: locator.series_title
 
   files.each do |file|
