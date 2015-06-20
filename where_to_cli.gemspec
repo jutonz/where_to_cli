@@ -19,6 +19,7 @@ spec = Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', '~> 10.4.2', '>= 10.4'
   s.add_development_dependency 'rdoc', '~> 4.2.0', '>= 4.2'
+  s.add_development_dependency 'rspec', '~> 3.2'
 
   s.add_runtime_dependency 'where_to', '~> 0.9.0', '>= 0.9'
   s.add_runtime_dependency 'gli', '2.13.1'

@@ -8,6 +8,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    diff-lcs (1.2.5)
     gli (2.13.1)
     httparty (0.13.5)
       json (~> 1.8)
@@ -16,6 +17,19 @@ GEM
     multi_xml (0.5.5)
     rake (10.4.2)
     rdoc (4.2.0)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
+    rspec-core (3.3.0)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-mocks (3.3.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
     tvdb_party (0.8.1)
       httparty (>= 0.6.1)
     where_to (0.9.5)
@@ -27,6 +41,7 @@ PLATFORMS
 DEPENDENCIES
   rake (~> 10.4.2, >= 10.4)
   rdoc (~> 4.2.0, >= 4.2)
+  rspec (~> 3.2)
   where_to_cli!
 
 BUNDLED WITH
