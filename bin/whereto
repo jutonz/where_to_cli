@@ -74,7 +74,7 @@ end
 def process(files)
   locator = WhereTo::Locator.new
   locator.episode_number = 0
-  locator.series_title   = prompt_for_series_title default: locator.series_title
+  locator.series_title   = prompt_for :series_title, default: locator.series_title
 
   files.each do |file|
     puts ''
